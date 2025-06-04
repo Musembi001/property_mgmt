@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -75,13 +74,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# PostgreSQL Database config for Render
+# **Updated SQLite Database Configuration**
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
