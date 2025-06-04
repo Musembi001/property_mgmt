@@ -1,0 +1,13 @@
+<!-- filepath: c:\Users\Musembi Joseph\Documents\pms\property_mgmt\templates\properties\unit_form.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ view.object.pk|yesno:"Edit Unit,Add Unit" }}</h2>
+    <form method="post" class="card p-4 shadow-sm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'unit_list' building_id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

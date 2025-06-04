@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>{{ document.title }}</h3>
+    <p><strong>Description:</strong> {{ document.description }}</p>
+    <p><strong>Uploaded by:</strong> {{ document.uploaded_by }}</p>
+    <p><strong>Date:</strong> {{ document.uploaded_at|date:"Y-m-d H:i" }}</p>
+    <a href="{{ document.file.url }}" class="btn btn-primary" download>Download</a>
+    <a href="{% url 'document_list' %}" class="btn btn-secondary">Back to Documents</a>
+</div>
+{% endblock %}

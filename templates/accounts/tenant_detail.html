@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Tenant Details</h2>
+    <p><strong>Name:</strong> {{ tenant.get_full_name }}</p>
+    <p><strong>Email:</strong> {{ tenant.email }}</p>
+    <p><strong>Phone:</strong> {{ tenant.phone_number }}</p>
+    <p><strong>Status:</strong> {{ tenant.is_active|yesno:"Active,Inactive" }}</p>
+    <a href="{% url 'tenant_list' %}" class="btn btn-secondary">Back to list</a>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!-- filepath: c:\Users\Musembi Joseph\Documents\pms\property_mgmt\templates\properties\building_list.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Buildings</h2>
+    <a href="{% url 'building_add' %}" class="btn btn-primary mb-3">Add Building</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Landlord</th>
+                <th style="width: 220px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for building in object_list %}
+            <tr>
+                <td>{{ building.name }}</td>
+                <td>{{ building.city.name }}</td>
+                <td>{{ building.landlord.get_full_name|default:building.landlord.username }}</td>
+                <td>
+                    <a href="{% url 'building_edit' building.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'building_delete' building.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{% url 'unit_list' building.pk %}" class="btn btn-sm btn-info">Units</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No buildings found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

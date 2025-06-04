@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Your Notifications</h3>
+    <ul class="list-group">
+        {% for n in notifications %}
+        <li class="list-group-item{% if not n.is_read %} list-group-item-info{% endif %}">
+            <strong>[{{ n.get_channel_display }}]</strong> {{ n.message }} <br>
+            <small>{{ n.created_at }}</small>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No notifications.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Visitors</h3>
+    <a href="{% url 'visitor_register' %}" class="btn btn-primary mb-3">Register Visitor</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Whom to Visit</th>
+                <th>Purpose</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visitor in visitors %}
+            <tr>
+                <td>{{ visitor.name }}</td>
+                <td>{{ visitor.whom_to_visit }}</td>
+                <td>{{ visitor.purpose }}</td>
+                <td>{{ visitor.check_in|date:"Y-m-d H:i" }}</td>
+                <td>
+                    {% if visitor.check_out %}
+                        {{ visitor.check_out|date:"Y-m-d H:i" }}
+                    {% else %}
+                        <a href="{% url 'visitor_checkout' visitor.pk %}" class="btn btn-warning btn-sm">Check Out</a>
+                    {% endif %}
+                </td>
+                <td>{{ visitor.notes|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No visitors found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Leases Report</h3>
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-3">
+            <input type="text" name="tenant" class="form-control" placeholder="Tenant Name" value="{{ request.GET.tenant }}">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="unit" class="form-control" placeholder="Unit" value="{{ request.GET.unit }}">
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">All Status</option>
+                <option value="active" {% if request.GET.status == "active" %}selected{% endif %}>Active</option>
+                <option value="ended" {% if request.GET.status == "ended" %}selected{% endif %}>Ended</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary" type="submit">Filter</button>
+            <a href="?export=excel" class="btn btn-success">Export Excel</a>
+            <a href="?export=pdf" class="btn btn-danger">Export PDF</a>
+        </div>
+    </form>
+    <canvas id="leaseStatusChart" height="80"></canvas>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Tenant</th>
+                <th>Unit</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in leases %}
+            <tr>
+                <td>{{ lease.tenant.get_full_name|default:lease.tenant.username }}</td>
+                <td>{{ lease.unit }}</td>
+                <td>{{ lease.start_date }}</td>
+                <td>{{ lease.end_date }}</td>
+                <td>{{ lease.status|title }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No leases found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('leaseStatusChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Active', 'Ended'],
+            datasets: [{
+                data: [{{ active_count }}, {{ ended_count }}],
+                backgroundColor: ['#28a745', '#dc3545']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Ticket: {{ ticket.subject }}</h3>
+    <p><strong>Status:</strong> {{ ticket.get_status_display }}</p>
+    <p><strong>Message:</strong><br>{{ ticket.message }}</p>
+    {% if ticket.admin_response %}
+    <div class="alert alert-info mt-3">
+        <strong>Admin Response:</strong><br>{{ ticket.admin_response }}
+    </div>
+    {% endif %}
+    <a href="{% url 'support_list' %}" class="btn btn-secondary mt-3">Back to Tickets</a>
+</div>
+{% endblock %}

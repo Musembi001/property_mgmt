@@ -1,0 +1,33 @@
+<!-- filepath: c:\Users\Musembi Joseph\Documents\pms\property_mgmt\templates\properties\city_list.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Cities</h2>
+    <a href="{% url 'city_add' %}" class="btn btn-primary mb-3">Add City</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>County</th>
+                <th style="width: 180px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for city in object_list %}
+            <tr>
+                <td>{{ city.name }}</td>
+                <td>{{ city.county.name }}</td>
+                <td>
+                    <a href="{% url 'city_edit' city.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'city_delete' city.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No cities found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Payment Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            width: 80mm;
+            margin: 0 auto;
+        }
+        .receipt-box {
+            padding: 10px;
+            border: 1px dashed #333;
+            width: 80mm;
+        }
+        .header {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 2px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-box">
+        <div class="header">Payment Receipt</div>
+        <div class="details">
+            <p><strong>Receipt No:</strong> {{ payment.id }}</p>
+            <p><strong>Date:</strong> {{ payment.date|date:"Y-m-d H:i" }}</p>
+            <p><strong>Tenant:</strong> {{ payment.lease.tenant.get_full_name|default:payment.lease.tenant.username }}</p>
+            <p><strong>Unit:</strong> {{ payment.lease.unit }}</p>
+            <p><strong>Amount:</strong> KES {{ payment.amount }}</p>
+            <p><strong>Method:</strong> {{ payment.get_method_display }}</p>
+            <p><strong>Reference:</strong> {{ payment.reference }}</p>
+            <p><strong>Status:</strong> {{ payment.status|title }}</p>
+        </div>
+        <div class="footer">
+            Thank you for your payment!
+        </div>
+    </div>
+</body>
+</html>

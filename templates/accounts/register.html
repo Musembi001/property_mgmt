@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    body, #auth-bg {
+        background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%) !important;
+        min-height: 100vh;
+    }
+    .register-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+        background: rgba(255,255,255,0.97);
+        backdrop-filter: blur(4px);
+    }
+    .register-header {
+        background: linear-gradient(90deg, #1976d2 0%, #0d47a1 100%);
+        border-top-left-radius: 1.25rem;
+        border-top-right-radius: 1.25rem;
+    }
+    .register-header h3 {
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .form-control:focus {
+        border-color: #1976d2;
+        box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.15);
+    }
+    .toggle-link {
+        color: #1976d2;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center" id="auth-bg">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card register-card border-0 shadow-lg">
+                <div class="text-center mt-4">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/building.svg" alt="Logo" style="height: 60px;">
+                </div>
+                <div class="card-header register-header text-white text-center py-4 rounded-top">
+                    <h3 class="mb-0"><i class="bi bi-person-plus"></i> Create an Account</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" id="registerForm" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="mb-3">{{ form.username.label_tag }} {{ form.username|add_class:"form-control" }}</div>
+                        <div class="mb-3">{{ form.email.label_tag }} {{ form.email|add_class:"form-control" }}</div>
+                        <div class="mb-3">{{ form.role.label_tag }} {{ form.role|add_class:"form-select" }}</div>
+                        <div class="mb-3">{{ form.full_name.label_tag }} {{ form.full_name|add_class:"form-control" }}</div>
+                        <div class="mb-3">{{ form.phone_number.label_tag }} {{ form.phone_number|add_class:"form-control" }}</div>
+                        <div class="mb-3">{{ form.national_id.label_tag }} {{ form.national_id|add_class:"form-control" }}</div>
+                        <div class="mb-3 company-field d-none">{{ form.company_name.label_tag }} {{ form.company_name|add_class:"form-control" }}</div>
+                        <div class="mb-3 agency-field d-none">{{ form.agency_name.label_tag }} {{ form.agency_name|add_class:"form-control" }}</div>
+                        <div class="mb-3 emergency-field d-none">{{ form.emergency_contact_name.label_tag }} {{ form.emergency_contact_name|add_class:"form-control" }}</div>
+                        <div class="mb-3 emergency-field d-none">{{ form.emergency_contact_phone.label_tag }} {{ form.emergency_contact_phone|add_class:"form-control" }}</div>
+                        <div class="mb-3 caretaker-field d-none">{{ form.assigned_property.label_tag }} {{ form.assigned_property|add_class:"form-control" }}</div>
+                        <div class="mb-3 position-relative">
+                            {{ form.password1.label_tag }} {{ form.password1|add_class:"form-control" }}
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor:pointer;" onclick="togglePassword('id_password1', this)">
+                                <i class="bi bi-eye-slash" id="togglePassword1"></i>
+                            </span>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            {{ form.password2.label_tag }} {{ form.password2|add_class:"form-control" }}
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor:pointer;" onclick="togglePassword('id_password2', this)">
+                                <i class="bi bi-eye-slash" id="togglePassword2"></i>
+                            </span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold" id="registerBtn">
+                            <span id="registerSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                            Register
+                        </button>
+                    </form>
+                    <p class="mt-3 text-center mb-0">Already have an account? <a href="{% url 'login' %}" class="toggle-link">Login</a></p>
+                    {% if form.errors %}
+                    <div class="alert alert-danger mt-3">
+                        {{ form.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePassword(fieldId, el) {
+    const input = document.getElementById(fieldId);
+    const icon = el.querySelector('i');
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        input.type = "password";
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+}
+document.getElementById('id_role').addEventListener('change', function() {
+    let role = this.value;
+    document.querySelector('.company-field').classList.toggle('d-none', role !== 'landlord');
+    document.querySelector('.agency-field').classList.toggle('d-none', role !== 'agent');
+    document.querySelectorAll('.emergency-field').forEach(el => el.classList.toggle('d-none', role !== 'tenant'));
+    document.querySelector('.caretaker-field').classList.toggle('d-none', role !== 'caretaker');
+});
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    document.getElementById('registerSpinner').classList.remove('d-none');
+});
+</script>
+{% endblock %}
+{% block sidebar %}{% endblock %}

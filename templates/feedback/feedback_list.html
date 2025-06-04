@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Feedback</h3>
+    <a href="{% url 'feedback_submit' %}" class="btn btn-primary mb-3">Leave Feedback</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Rating</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Response</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fb in feedbacks %}
+            <tr>
+                <td>{{ fb.user }}</td>
+                <td>{{ fb.rating }}</td>
+                <td>{{ fb.message }}</td>
+                <td>{{ fb.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ fb.response|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No feedback yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

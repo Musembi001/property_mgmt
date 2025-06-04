@@ -1,0 +1,15 @@
+<!-- filepath: c:\Users\Musembi Joseph\Documents\pms\property_mgmt\templates\properties\unit_confirm_delete.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="alert alert-danger">
+        <h4>Delete Unit</h4>
+        <p>Are you sure you want to delete unit "{{ object.unit_number }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'unit_list' object.building_id %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

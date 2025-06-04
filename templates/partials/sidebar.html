@@ -1,0 +1,40 @@
+<!-- filepath: c:\Users\Musembi Joseph\Documents\pms\property_mgmt\templates\partials\sidebar.html -->
+<div class="sidebar p-3 d-none d-lg-block" id="sidebar">
+    <h4 class="mb-4"><i class="bi bi-building"></i> PMS</h4>
+    <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+    {% if request.user.role == "landlord" %}
+        <a href="/properties/"><i class="bi bi-house-door"></i> Properties</a>
+        <a href="/accounts/users/"><i class="bi bi-people"></i> Tenants</a>
+        <a href="/leases/"><i class="bi bi-file-earmark-text"></i> Leases</a>
+        <a href="/payments/"><i class="bi bi-cash-stack"></i> Payments</a>
+        <a href="/maintenance/"><i class="bi bi-tools"></i> Maintenance</a>
+        <a href="/reports/"><i class="bi bi-bar-chart"></i> Reports</a>
+        <a href="/feedback/"><i class="bi bi-chat-dots"></i> Feedback</a>
+        <a href="/documents/"><i class="bi bi-folder2"></i> Documents</a>
+        <a href="/auditlog/"><i class="bi bi-clipboard-data"></i> Audit Log</a>
+        <a href="/expenses/"><i class="bi bi-currency-exchange"></i> Expenses</a>
+        <a href="/parking/"><i class="bi bi-car-front"></i> Parking</a>
+        <a href="/visitors/"><i class="bi bi-person-badge"></i> Visitors</a>
+    {% elif request.user.role == "agent" %}
+        <a href="/properties/"><i class="bi bi-house-door"></i> Properties</a>
+        <a href="/leases/"><i class="bi bi-file-earmark-text"></i> Leases</a>
+        <a href="/payments/"><i class="bi bi-cash-stack"></i> Payments</a>
+        <a href="/maintenance/"><i class="bi bi-tools"></i> Maintenance</a>
+        <a href="/reports/"><i class="bi bi-bar-chart"></i> Reports</a>
+        <a href="/feedback/"><i class="bi bi-chat-dots"></i> Feedback</a>
+        <a href="/documents/"><i class="bi bi-folder2"></i> Documents</a>
+        <a href="/notifications/"><i class="bi bi-bell"></i> Notifications</a>
+    {% elif request.user.role == "caretaker" %}
+        <a href="/maintenance/"><i class="bi bi-tools"></i> Maintenance</a>
+        <a href="/notifications/"><i class="bi bi-bell"></i> Notifications</a>
+    {% elif request.user.role == "tenant" %}
+        <a href="/leases/"><i class="bi bi-file-earmark-text"></i> My Leases</a>
+        <a href="/payments/"><i class="bi bi-cash-stack"></i> My Payments</a>
+        <a href="/maintenance/"><i class="bi bi-tools"></i> My Maintenance</a>
+        <a href="/support/"><i class="bi bi-question-circle"></i> Support</a>
+        <a href="/feedback/"><i class="bi bi-chat-dots"></i> Feedback</a>
+        <a href="/notifications/"><i class="bi bi-bell"></i> Notifications</a>
+    {% endif %}
+</div>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Expenses</h3>
+    <a href="{% url 'expense_create' %}" class="btn btn-primary mb-3">Add Expense</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Created By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.description }}</td>
+                <td>KES {{ expense.amount }}</td>
+                <td>{{ expense.get_category_display }}</td>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.created_by }}</td>
+                <td><a href="{% url 'expense_detail' expense.pk %}" class="btn btn-info btn-sm">View</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No expenses found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

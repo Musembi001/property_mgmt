@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Events Calendar</h3>
+    <a href="{% url 'event_create' %}" class="btn btn-primary mb-3">Add Event</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Start</th>
+                <th>End</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.title }}</td>
+                <td>{{ event.start_time|date:"Y-m-d H:i" }}</td>
+                <td>{{ event.end_time|date:"Y-m-d H:i" }}</td>
+                <td><a href="{% url 'event_detail' event.pk %}" class="btn btn-info btn-sm">View</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No events scheduled.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

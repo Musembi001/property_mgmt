@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Reports Dashboard</h3>
+    <div class="list-group">
+        <a href="{% url 'payments_report' %}" class="list-group-item list-group-item-action">
+            <i class="bi bi-cash-stack"></i> Payments Report
+        </a>
+        <a href="{% url 'leases_report' %}" class="list-group-item list-group-item-action">
+            <i class="bi bi-file-earmark-text"></i> Leases Report
+        </a>
+        <a href="{% url 'properties_report' %}" class="list-group-item list-group-item-action">
+            <i class="bi bi-house-door"></i> Properties Report
+        </a>
+    </div>
+</div>
+{% endblock %}

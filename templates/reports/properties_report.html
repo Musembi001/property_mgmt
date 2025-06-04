@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Properties Report</h3>
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="name" class="form-control" placeholder="Property Name" value="{{ request.GET.name }}">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request.GET.location }}">
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" type="submit">Filter</button>
+            <a href="?export=excel" class="btn btn-success">Export Excel</a>
+            <a href="?export=pdf" class="btn btn-danger">Export PDF</a>
+        </div>
+    </form>
+    <canvas id="occupancyChart" height="80"></canvas>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Total Units</th>
+                <th>Occupied</th>
+                <th>Vacant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prop in properties %}
+            <tr>
+                <td>{{ prop.name }}</td>
+                <td>{{ prop.location }}</td>
+                <td>{{ prop.total_units }}</td>
+                <td>{{ prop.occupied_units }}</td>
+                <td>{{ prop.vacant_units }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No properties found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('occupancyChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for prop in properties %}'{{ prop.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [
+                {
+                    label: 'Occupied',
+                    data: [{% for prop in properties %}{{ prop.occupied_units }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: '#28a745'
+                },
+                {
+                    label: 'Vacant',
+                    data: [{% for prop in properties %}{{ prop.vacant_units }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: '#dc3545'
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'bottom' }
+            },
+            responsive: true
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Parking Slots</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Slot Number</th>
+                <th>Location</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot in slots %}
+            <tr>
+                <td>{{ slot.slot_number }}</td>
+                <td>{{ slot.location }}</td>
+                <td>{{ slot.is_active|yesno:"Active,Inactive" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No slots found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
